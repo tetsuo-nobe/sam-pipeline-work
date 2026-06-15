@@ -9,6 +9,7 @@ phases:
       - pip install aws-sam-cli
 
   build:
+    on-failure: ABORT
     commands:
       # SAM アプリケーションのビルド
       - sam build
