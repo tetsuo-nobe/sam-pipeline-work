@@ -123,8 +123,15 @@ Resources:
                 Action:
                   - codestar-connections:UseConnection
                   - codestar-connections:GetConnection
-                  - codestar-connections:GetConnectionToken
-                Resource: !Sub arn:aws:codestar-connections:${Region}:${AWS::AccountId}:connection/*
+                  - codestar-connections:ListConnections
+                  - codestar-connections:PassConnection
+                  - codeconnections:UseConnection
+                  - codeconnections:GetConnection
+                  - codeconnections:ListConnections
+                  - codeconnections:PassConnection
+                Resource:
+                  - !Sub arn:aws:codestar-connections:${Region}:${AWS::AccountId}:connection/*
+                  - !Sub arn:aws:codeconnections:${Region}:${AWS::AccountId}:connection/*
               # Create SAM managed stack for --resolve-s3
               - Effect: Allow
                 Action:
