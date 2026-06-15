@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.13
+    commands:
+      # SAM CLI のインストール
+      - pip install aws-sam-cli
+
+  build:
+    commands:
+      # SAM アプリケーションのビルド
+      - sam build
+
+  post_build:
+    commands:
+      # SAM アプリケーションのパッケージング
+      - sam package --output-template-file packaged.yaml --resolve-s3
+
+artifacts:
+  type: zip
+  files:
+    - packaged.yaml
+    - template.yaml
