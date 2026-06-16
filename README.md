@@ -17,9 +17,8 @@
 1. [**テンプレートの指定**]  で [**テンプレートソース**] に [**Amazon S3 URL**]  を選択します。
 
 1. [**Amazon S3 URL**]  に下記を入力します。
-
     - ```
-    　https://tnobep-work-public.s3.ap-northeast-1.amazonaws.com/sam-pipeline-work/pipeline-roles.yaml
+      https://tnobep-work-public.s3.ap-northeast-1.amazonaws.com/sam-pipeline-work/pipeline-roles.yaml
       ```
 
 1. [**次へ**]  をクリックします。
