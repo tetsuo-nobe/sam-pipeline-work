@@ -4,7 +4,56 @@
 
 * マネジメントコンソールと CloudShell を使用して操作します。
 
-## 事前準備: 必要な IAM ロールの作成
+## 事前準備: SAM 用のバケットを作成
+
+### チームの代表者だけが操作して下さい。
+- この手順はアカウント＋リージョンにつき **一度だけ** 実行すれば十分です。
+- 作成されたバケットは、以降すべての `sam package --resolve-s3` で共有されます。
+
+1. CloudShell を開く
+
+AWS マネジメントコンソール上部の CloudShell アイコンをクリックします。
+
+2. ダミーテンプレートを作成する
+
+```bash
+cat <<'EOF' > dummy-template.yaml
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Dummy template for creating SAM managed bucket
+Resources: {}
+EOF
+```
+
+3. sam package を実行する
+
+```bash
+sam package --resolve-s3 --template-file dummy-template.yaml --output-template-file /dev/null
+```
+
+以下のような出力が表示されれば成功です：
+
+```
+Creating the required resources...
+Successfully created!
+```
+4. 作成されたことを確認する（任意）
+
+```bash
+aws cloudformation describe-stacks --stack-name aws-sam-cli-managed-default --query "Stacks[0].StackStatus" --output text
+```
+
+`CREATE_COMPLETE` と表示されれば OK です。
+
+5. ダミーテンプレートを削除する
+
+```bash
+rm dummy-template.yaml
+```
+
+## 以降は、メンバー個別で操作して下さい。
+  
+## 1. 必要な IAM ロールの作成
 
 * **チーム内で自分のユニークな ID を決めてください。**
 
@@ -39,7 +88,7 @@
 
 1. スタックの作成完了を確認してから次の手順に進みます。
 
-### 1. CodeCommit リポジトリの作成
+### 2. CodeCommit リポジトリの作成
 
 マネージメントコンソールの左下の CloudShell のアイコンをクリックして、以下のコマンドを CloudShell から実行します。
 
@@ -85,7 +134,7 @@ git clone https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/sam-pipel
 
 * クローンが成功すると、`sam-pipeline-work-${MYID}` ディレクトリが作成されます（空のリポジトリの警告が出ますが問題ありません）。
 
-### 2. GitHub から取得したコードを CodeCommit へ Push
+### 3. GitHub から取得したコードを CodeCommit へ Push
 
 
 ```bash
@@ -111,7 +160,7 @@ cp -rp $(ls -A | grep -v "^.git$") ~/sam-pipeline-work-${MYID}/
 ls ~/sam-pipeline-work-${MYID}
 ```
 
-### 3. CodeCommit のローカルリポジトリをコミットする
+### 4. CodeCommit のローカルリポジトリをコミットする
 
 1. CloudShell で以下のコマンドを実行し、ファイルをステージングしてコミットします。
 
@@ -124,7 +173,7 @@ git add .
 git commit -m "Initial commit sam app"
 ```
 
-### 4. CodeCommit のローカルリポジトリをプッシュする
+### 5. CodeCommit のローカルリポジトリをプッシュする
 
 1. CloudShell で以下のコマンドを実行し、CodeCommit のリモートリポジトリにプッシュします。
 
@@ -137,7 +186,7 @@ git push -u origin main
    - 確認したら、CloudShell を閉じます。
 ---
 
-## 5. AWS CodeBuild のビルドプロジェクトを作成
+## 6. AWS CodeBuild のビルドプロジェクトを作成
 
 1. マネージメントコンソールで CodeBuild のページを開きます。
 
@@ -167,7 +216,7 @@ git push -u origin main
 
 
 ---
-## 6. AWS CodePipeline のパイプラインを作成
+## 7. AWS CodePipeline のパイプラインを作成
 
 1. 左側のナビゲーションメニューから [**パイプライン・CodePipeline**] を展開表示し、[**パイプライン**] をクリックします。
 
@@ -239,7 +288,7 @@ git push -u origin main
 1. ブラウザに文字列 **{"message": "hello world"}** が表示されることを確認します。
 
 ---
-## 7. ブランチのコードを更新してパイプラインを再実行する
+## 8. ブランチのコードを更新してパイプラインを再実行する
 
 1. CodePiplien のページに戻ります。
 
@@ -266,13 +315,13 @@ git push -u origin main
 
 ---
 
-## 8. クリーンアップ
+## 9. クリーンアップ
 
 ハンズオンで作成したリソースを削除します。以下の順序で削除してください。
 
 > **注意**: 削除する順序が重要です。依存関係があるため、下記の順番で実行してください。
 
-### 8-1. SAM アプリケーションスタックの削除
+### 9-1. SAM アプリケーションスタックの削除
 
 1. マネジメントコンソールで CloudFormation のページを開きます。
 
@@ -282,28 +331,28 @@ git push -u origin main
 
 1. スタックの削除完了を待ちます。
 
-### 8-2. パイプラインの削除
+### 9-2. パイプラインの削除
 
 1. CodePipeline のページを開きます。
 
 1. `sam-pipeline-(自分のID)` のラジオボタンを選択し、[**パイプラインを削除する**] をクリックします。
     - その後表示されるダイアログで、`delete` を入力して削除します。
 
-### 8-3. CodeBuild ビルドプロジェクトの削除
+### 9-3. CodeBuild ビルドプロジェクトの削除
 
 1. CodeBuild のページを開きます。
 
 1. `sam-build-project-(自分のID)` のラジオボタンを選択し、[**アクション**] - [**削除**] をクリックします。
     - その後表示されるダイアログで、`delete` を入力して削除します。
 
-### 8-4. CodeCommit リポジトリの削除
+### 9-4. CodeCommit リポジトリの削除
 
 1. CodeCommit のページを開きます。
 
 1. `sam-pipeline-work-(自分のID)` のラジオボタンを選択し、[**リポジトリの削除**] をクリックします。
     - その後表示されるダイアログで、`delete` を入力して削除します。
 
-### 8-5. IAM ロールスタックの削除
+### 9-5. IAM ロールスタックの削除
 
 1. CloudFormation のページを開きます。
 
@@ -311,7 +360,7 @@ git push -u origin main
 
 1. [**スタックを削除**] をクリックし、確認画面で必要な入力を行い [**スタックを削除**] をクリックします。
 
-### 8-6. CloudWatch Logs ロググループの削除
+### 9-6. CloudWatch Logs ロググループの削除
 
 1. CloudWatch のページを開きます。
 
@@ -321,7 +370,9 @@ git push -u origin main
 
 1. `/aws/lambda/hello-function` があれば同様に削除します。
 
-### 8-7. パイプラインのアーティファクト用 S3 バケットの削除（オプション）
+* 以降は後日実施して下さい。
+
+### 9-7. パイプラインのアーティファクト用 S3 バケットの削除（オプション）
 
 1. S3 のページを開きます。
 
@@ -331,7 +382,7 @@ git push -u origin main
 
 1. その後、バケットを選択して [**削除**] をクリックします。
 
-### 8-8. SAM 管理スタックとバケットの削除（オプション）
+### 9-8. SAM 管理スタックとバケットの削除（オプション）
 
 1. S3 のページで `aws-sam-cli-managed-default-samclisourcebucket-` で始まるバケットのラジオボタンを選択して [**空にする**] を選択してすべてのオブジェクトを削除します。 
 
