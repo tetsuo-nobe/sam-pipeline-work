@@ -209,7 +209,7 @@ git push -u origin main
 
 1. [**テンプレート**] の [**アーティファクト名**] に [**BuildArtifact**] を選択します。
 
-1. [**テンプレート**] の [**ファイル名名**] に `packaged.yaml` を入力します。
+1. [**テンプレート**] の [**ファイル名**] に `packaged.yaml` を入力します。
 
 1. [**機能**] で [**CAPABILITY_IAM**] と [**CAPABILITY_AUTO_EXPAND**] を選択します。
     - 必ず 2つ選択して下さい。
