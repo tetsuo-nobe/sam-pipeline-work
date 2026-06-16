@@ -17,8 +17,9 @@
 1. [**テンプレートの指定**]  で [**テンプレートソース**] に [**Amazon S3 URL**]  を選択します。
 
 1. [**Amazon S3 URL**]  に下記を入力します。
+
     - ```
-      https://tnobep-work-public.s3.ap-northeast-1.amazonaws.com/sam-pipeline-work/pipeline-roles.yaml
+    　https://tnobep-work-public.s3.ap-northeast-1.amazonaws.com/sam-pipeline-work/pipeline-roles.yaml
       ```
 
 1. [**次へ**]  をクリックします。
@@ -56,6 +57,13 @@ aws codecommit create-repository --repository-name sam-pipeline-work-${MYID} --r
 
 ```bash
 git config --global init.defaultBranch main
+```
+
+* 以下のコマンドを実行して、Git が CodeCommit の認証に AWS CLI の認証情報を使うように設定します。
+
+```bash
+git config --global credential.helper '!aws codecommit credential-helper $@'
+git config --global credential.UseHttpPath true
 ```
 
 ```bash
@@ -211,7 +219,6 @@ git push -u origin main
 
 * Source, Build, Deploy のすべてのステージに緑色のチェックマークが表示されるまで待機します。（約 8～10 分ほど）
 
-![](pipeline.png)
 
 ### デプロイされたアプリケーションを確認する
 
