@@ -105,7 +105,7 @@ cp -rp $(ls -A | grep -v "^.git$") ~/sam-pipeline-work-${MYID}/
 ```
 
 
-* ファイルがコピーされたことを確認します。
+* ファイルがコピーされたことを確認します。(3つの .yaml ファイルと hello_world フォルダなどが表示されれば OK です。)
 
 ```bash
 ls ~/sam-pipeline-work-${MYID}
