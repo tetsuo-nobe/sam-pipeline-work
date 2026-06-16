@@ -226,6 +226,7 @@ git push -u origin main
 
 * Source, Build, Deploy のすべてのステージに緑色のチェックマークが表示されるまで待機します。（数分かかります。）
 
+![](pipeline.png)
 
 ### デプロイされたアプリケーションを確認する
 
