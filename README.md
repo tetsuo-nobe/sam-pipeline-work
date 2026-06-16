@@ -232,7 +232,7 @@ git push -u origin main
 
 1. Deploy ステージの中に表示されている [**AWS CloudFormation**] のリンクをクリックします。
 
-1. CloudFormation のページが表示されるので、[**出力タブ**] をクリックします。
+1. CloudFormation のページが表示されるので、[**出力**] タブをクリックします。
 
 1. [**キー**] が **HelloWorldApi** の [**値**] として表示されている URL をクリックします。 
 
