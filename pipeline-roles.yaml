@@ -109,6 +109,11 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: '*'
+              # Access to CodeCommit source repository
+              - Effect: Allow
+                Action:
+                  - codecommit:GitPull
+                Resource: !Sub arn:aws:codecommit:${Region}:${AWS::AccountId}:*
               # Access to artifact S3 bucket
               - Effect: Allow
                 Action:
