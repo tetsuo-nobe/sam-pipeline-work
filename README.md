@@ -211,6 +211,7 @@ git push -u origin main
 
 * Source, Build, Deploy のすべてのステージに緑色のチェックマークが表示されるまで待機します。（約 8～10 分ほど）
 
+![](pipeline.png)
 
 ### デプロイされたアプリケーションを確認する
 
