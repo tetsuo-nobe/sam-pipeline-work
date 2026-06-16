@@ -21,9 +21,13 @@ cat <<'EOF' > dummy-template.yaml
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Dummy template for creating SAM managed bucket
-Resources: {}
+Resources:
+  DummyWaitConditionHandle:
+    Type: AWS::CloudFormation::WaitConditionHandle
 EOF
 ```
+
+> `Resources` には最低 1 つのリソースが必要なため、何も実体を作らない `WaitConditionHandle` を定義しています。
 
 3. sam package を実行する
 
