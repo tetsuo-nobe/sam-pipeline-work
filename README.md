@@ -19,8 +19,8 @@
 1. [**Amazon S3 URL**]  に下記を入力します。
 
     - ```
-      https://tnobep-work-public.s3.ap-northeast-1.amazonaws.com/sam-pipeline-work/pipeline-roles.yaml
-      ```
+    https://tnobep-work-public.s3.ap-northeast-1.amazonaws.com/sam-pipeline-work/pipeline-roles.yaml
+    ```
 
 1. [**次へ**]  をクリックします。
 
@@ -57,6 +57,13 @@ aws codecommit create-repository --repository-name sam-pipeline-work-${MYID} --r
 
 ```bash
 git config --global init.defaultBranch main
+```
+
+* 以下のコマンドを実行して、Git のユーザー情報を設定します。
+
+```bash
+git config --global user.email "dummy-${MYID}@example.com"
+git config --global user.name "${MYID}"
 ```
 
 * 以下のコマンドを実行して、Git が CodeCommit の認証に AWS CLI の認証情報を使うように設定します。
