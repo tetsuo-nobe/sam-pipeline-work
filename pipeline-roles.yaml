@@ -138,28 +138,49 @@ Resources:
                   - !Sub arn:aws:codestar-connections:${Region}:${AWS::AccountId}:connection/*
                   - !Sub arn:aws:codeconnections:${Region}:${AWS::AccountId}:connection/*
               # Create SAM managed stack for --resolve-s3
+              # SAM CLI uses CreateChangeSet with ChangeSetType=CREATE,
+              # which requires permissions on both the stack and changeset resources.
+              # Since no execution role is passed, CodeBuild's role is used to create resources.
               - Effect: Allow
                 Action:
                   - cloudformation:CreateChangeSet
                   - cloudformation:CreateStack
+                  - cloudformation:DeleteStack
                   - cloudformation:DescribeChangeSet
                   - cloudformation:DescribeStacks
                   - cloudformation:DescribeStackEvents
                   - cloudformation:ExecuteChangeSet
+                  - cloudformation:GetTemplate
                   - cloudformation:GetTemplateSummary
+                  - cloudformation:ValidateTemplate
+                  - cloudformation:ListStackResources
                 Resource:
                   - !Sub arn:aws:cloudformation:${Region}:${AWS::AccountId}:stack/aws-sam-cli-managed-default/*
+                  - !Sub arn:aws:cloudformation:${Region}:aws:transform/Serverless-2016-10-31
+              # GetTemplateSummary and ValidateTemplate require global resource permission
+              - Effect: Allow
+                Action:
+                  - cloudformation:GetTemplateSummary
+                  - cloudformation:ValidateTemplate
+                Resource: '*'
               # Create and access SAM managed S3 bucket
+              # The bucket name pattern varies: it may contain the account ID or a random suffix
               - Effect: Allow
                 Action:
                   - s3:CreateBucket
                   - s3:PutBucketPolicy
                   - s3:PutBucketVersioning
+                  - s3:PutBucketPublicAccessBlock
                   - s3:PutEncryptionConfiguration
                   - s3:GetBucketPolicy
                   - s3:GetEncryptionConfiguration
                   - s3:PutBucketTagging
-                Resource: !Sub arn:aws:s3:::aws-sam-cli-managed-default-samclisourcebucket-*
+                  - s3:GetBucketTagging
+                  - s3:DeleteBucket
+                  - s3:DeleteBucketPolicy
+                Resource:
+                  - !Sub arn:aws:s3:::aws-sam-cli-managed-default-samclisourcebucket-*
+                  - !Sub arn:aws:s3:::aws-sam-cli-managed-default-*
 
   # ============================================================
   # CloudFormation Execution Role
@@ -195,6 +216,8 @@ Resources:
                   - lambda:AddPermission
                   - lambda:RemovePermission
                   - lambda:PublishVersion
+                  - lambda:ListVersionsByFunction
+                  - lambda:GetAlias
                   - lambda:CreateAlias
                   - lambda:DeleteAlias
                   - lambda:UpdateAlias
@@ -238,7 +261,7 @@ Resources:
                   - s3:GetObject
                   - s3:GetObjectVersion
                 Resource: '*'
-              # CodeDeploy for future Blue/Green deployment
+              # CodeDeploy for Blue/Green deployment
               - Effect: Allow
                 Action:
                   - codedeploy:CreateApplication
@@ -248,6 +271,8 @@ Resources:
                   - codedeploy:DeleteDeploymentGroup
                   - codedeploy:GetDeployment
                   - codedeploy:GetDeploymentConfig
+                  - codedeploy:GetDeploymentGroup
+                  - codedeploy:UpdateDeploymentGroup
                   - codedeploy:RegisterApplicationRevision
                 Resource: '*'
 
