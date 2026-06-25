@@ -394,7 +394,7 @@ git push -u origin main
 
 1. S3 のページで `aws-sam-cli-managed-default-samclisourcebucket` で始まるバケットのラジオボタンを選択して [**空にする**] を選択してすべてのオブジェクトを削除します。 
 
-1. CloudFormation のページで `aws-sam-cli-managed-default` スタックを選択し、[**削除**] をクリックします。
+1. CloudFormation のページで `aws-sam-cli-managed-default` スタックを選択し、[**スタックを削除**] をクリックします。
 ---
 
 ### ワークを終了する時は、マネジメントコンソールからサインアウトして下さい。
