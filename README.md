@@ -83,7 +83,7 @@ rm dummy-template.yaml
 
 1. [**スタック名**]  に `sam-pipeline-work-role-stack-(自分のID)` と入力します。
 
-1. [**パラメータ**] で ProjectName に `sam-app-(自分のID)` と入力します。
+1. [**パラメータ**] で **ProjectName** に `sam-app-(自分のID)` と入力します。
 
 1. [**次へ**]  をクリックします。
 
