@@ -37,7 +37,7 @@ EOF
 sam package --resolve-s3 --template-file dummy-template.yaml --output-template-file /dev/null
 ```
 
-以下のような出力が表示されれば成功です：
+数分待機して、以下のような出力が表示されれば成功です：
 
 ```
 Creating the required resources...
@@ -56,6 +56,8 @@ aws cloudformation describe-stacks --stack-name aws-sam-cli-managed-default --qu
 ```bash
 rm dummy-template.yaml
 ```
+
+5. 処理が完了したことをチームの他のメンバーに伝えてください。
 
 ## 以降は、メンバー個別で操作して下さい。
   
