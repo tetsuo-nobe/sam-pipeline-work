@@ -57,7 +57,7 @@ aws cloudformation describe-stacks --stack-name aws-sam-cli-managed-default --qu
 rm dummy-template.yaml
 ```
 
-5. 処理が完了したことをチームの他のメンバーに伝えてください。
+6. CloudShell を閉じ、処理が完了したことをチームの他のメンバーに伝えてください。
 
 ## 以降は、メンバー個別で操作して下さい。
   
